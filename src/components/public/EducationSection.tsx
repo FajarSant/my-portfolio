@@ -86,7 +86,7 @@ export function EducationSection({ education }: EducationSectionProps) {
                   transition={{ duration: 0.8, delay: index * 0.15 }}
                   viewport={{ once: true }}
                 >
-                  <Card className="bg-white/90 dark:bg-gray-900/70 border-gray-200 dark:border-gray-800 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300">
+                  <Card className="bg-white/90 dark:bg-gray-900/70  backdrop-blur-sm transition-all duration-300">
                     <CardContent className="p-8">
                       <div className="flex items-start space-x-4">
                         <div className={`p-3 rounded-lg ${colorScheme.bg}`}>

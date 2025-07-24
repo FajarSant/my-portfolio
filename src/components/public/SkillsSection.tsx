@@ -6,6 +6,7 @@ import { Code } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Database } from "@/lib/supabase";
+import Image from "next/image";
 
 type Skill = Database["public"]["Tables"]["skills"]["Row"];
 
@@ -59,7 +60,7 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
                   <Badge
                     key={`${skill.id}-first-${index}`}
                     variant="secondary"
-                    className="px-4 py-3 text-sm font-medium bg-muted dark:bg-gray-900/50 border border-border dark:border-gray-800 backdrop-blur-sm transition-all duration-300 flex items-center gap-3 cursor-pointer hover:shadow-lg flex-shrink-0 hover:border-cyan-500/30"
+                    className="px-4 py-3 text-sm font-medium bg-muted dark:bg-gray-900/50 border border-cyan-700  dark:border-violet-800 backdrop-blur-sm transition-all duration-300 flex items-center gap-3 cursor-pointer hover:shadow-lg flex-shrink-0 dark:hover:border-violet-900/50 hover:border-cyan-500/50"
                     onMouseEnter={() => setIsFirstRowPaused(true)}
                     onMouseLeave={() => setIsFirstRowPaused(false)}
                   >
@@ -102,13 +103,13 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
                     <Badge
                       key={`${skill.id}-second-${index}`}
                       variant="secondary"
-                      className="px-4 py-3 text-sm font-medium bg-muted dark:bg-gray-900/50 border border-border dark:border-gray-800 backdrop-blur-sm transition-all duration-300 flex items-center gap-3 cursor-pointer hover:shadow-lg flex-shrink-0 hover:border-cyan-500/30"
+                      className="px-4 py-3 text-sm font-medium bg-muted dark:bg-gray-900/50 border border-cyan-700  dark:border-violet-800 backdrop-blur-sm transition-all duration-300 flex items-center gap-3 cursor-pointer hover:shadow-lg flex-shrink-0 dark:hover:border-violet-900/50 hover:border-cyan-500/50"
                       onMouseEnter={() => setIsSecondRowPaused(true)}
                       onMouseLeave={() => setIsSecondRowPaused(false)}
                     >
                       <div className="w-6 h-6 rounded-md bg-muted dark:bg-gray-800 flex items-center justify-center overflow-hidden flex-shrink-0">
                         {skill.icon_url ? (
-                          <img
+                          <Image
                             src={skill.icon_url}
                             alt={skill.name}
                             className="w-5 h-5 object-contain"

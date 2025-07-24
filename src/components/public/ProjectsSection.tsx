@@ -77,7 +77,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section
       id="projects"
-      className="py-20 px-6 h-screen bg-white dark:bg-gray-900 transition-colors duration-500"
+      className="py-20 px-6 bg-white dark:bg-gray-900 transition-colors duration-500"
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
@@ -103,7 +103,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                 >
-                  <Card className="bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 group hover:scale-105 h-full cursor-pointer">
+                  <Card className="bg-white dark:bg-gray-900 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 group hover:scale-105 h-full cursor-pointer">
                     <div className="relative overflow-hidden rounded-t-lg w-full h-48">
                       <Image
                         src={

@@ -9,6 +9,8 @@ import { ProjectsSection } from "@/components/public/ProjectsSection";
 import { SkillsSection } from "@/components/public/SkillsSection";
 import { EducationSection } from "@/components/public/EducationSection";
 import { supabase, type Database } from "@/lib/supabase";
+import { ContactSection } from "@/components/public/ContactSection";
+import { FooterSection } from "@/components/public/FooterSection";
 
 type Profile = Database["public"]["Tables"]["profile"]["Row"];
 type Experience = Database["public"]["Tables"]["experience"]["Row"];
@@ -114,6 +116,8 @@ export default function HomePage() {
       <ProjectsSection projects={projects} />
       <SkillsSection skills={skills} />
       <EducationSection education={education} />
+      <ContactSection profile={profile} />
+      <FooterSection profile={profile} /> *
     </div>
   );
 }

@@ -68,7 +68,7 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Card className="bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 backdrop-blur-sm transition-colors duration-500">
+            <Card className="bg-white dark:bg-gray-800 backdrop-blur-sm transition-colors duration-500">
               <CardContent className="p-8">
                 <div className="grid grid-cols-2 gap-6 text-center text-gray-900 dark:text-gray-100">
                   <div>

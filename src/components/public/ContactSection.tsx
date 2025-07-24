@@ -36,7 +36,6 @@ export function ContactSection({ profile }: ContactSectionProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate form data
     if (
       !formData.name ||
       !formData.email ||
@@ -47,14 +46,12 @@ export function ContactSection({ profile }: ContactSectionProps) {
       return;
     }
 
-    // Create WhatsApp message
     const whatsappMessage = `*Message From Website Portofolio*
 *Name:* ${formData.name}
 *Email:* ${formData.email}
 *Subject:* ${formData.subject}
 *Message:* ${formData.message}`;
 
-    // Get phone number from profile (remove any non-numeric characters except +)
     const phoneNumber = profile?.phone?.replace(/[^\d+]/g, "") || "";
 
     if (!phoneNumber) {
@@ -62,15 +59,12 @@ export function ContactSection({ profile }: ContactSectionProps) {
       return;
     }
 
-    // Create WhatsApp URL
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
       whatsappMessage
     )}`;
 
-    // Open WhatsApp
     window.open(whatsappUrl, "_blank");
 
-    // Reset form
     setFormData({
       name: "",
       email: "",
@@ -80,11 +74,14 @@ export function ContactSection({ profile }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="py-20 px-6">
+    <section
+      id="contact"
+      className="py-20 px-6 bg-white dark:bg-gray-900 transition-colors duration-500"
+    >
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
@@ -92,16 +89,21 @@ export function ContactSection({ profile }: ContactSectionProps) {
             Get In Touch
           </motion.h2>
           <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-300">
+          <motion.p
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl text-gray-700 dark:text-gray-300"
+          >
             Ready to bring your mobile app ideas to life? Let's discuss your
             next project.
-          </p>
+          </motion.p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
@@ -111,8 +113,12 @@ export function ContactSection({ profile }: ContactSectionProps) {
                   <Mail className="w-6 h-6 text-cyan-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Email</h3>
-                  <p className="text-gray-300">{profile.email}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Email
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {profile.email}
+                  </p>
                 </div>
               </div>
             )}
@@ -123,8 +129,12 @@ export function ContactSection({ profile }: ContactSectionProps) {
                   <Phone className="w-6 h-6 text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Phone</h3>
-                  <p className="text-gray-300">{profile.phone}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Phone
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {profile.phone}
+                  </p>
                 </div>
               </div>
             )}
@@ -135,63 +145,59 @@ export function ContactSection({ profile }: ContactSectionProps) {
                   <MapPin className="w-6 h-6 text-purple-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Location</h3>
-                  <p className="text-gray-300">{profile.location}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Location
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {profile.location}
+                  </p>
                 </div>
               </div>
             )}
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
-            <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm">
+            <Card className="bg-gray-100 dark:bg-gray-800 borderbackdrop-blur-sm transition-colors duration-500">
               <CardContent className="p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <Input
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Your Name"
-                      className="bg-gray-800/50 border-gray-700 text-white placeholder-gray-400 focus:border-cyan-400"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Your Email"
-                      className="bg-gray-800/50 border-gray-700 text-white placeholder-gray-400 focus:border-cyan-400"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      placeholder="Subject"
-                      className="bg-gray-800/50 border-gray-700 text-white placeholder-gray-400 focus:border-cyan-400"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Your message..."
-                      rows={5}
-                      className="bg-gray-800/50 border-gray-700 text-white placeholder-gray-400 focus:border-cyan-400 resize-none"
-                      required
-                    />
-                  </div>
+                  <Input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="Your Name"
+                    className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-cyan-400 dark:focus:border-cyan-400 transition-colors duration-300"
+                    required
+                  />
+                  <Input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Your Email"
+                    className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-cyan-400 dark:focus:border-cyan-400 transition-colors duration-300"
+                    required
+                  />
+                  <Input
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    placeholder="Subject"
+                    className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-cyan-400 dark:focus:border-cyan-400 transition-colors duration-300"
+                    required
+                  />
+                  <Textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Your message..."
+                    rows={5}
+                    className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-cyan-400 dark:focus:border-cyan-400 resize-none transition-colors duration-300"
+                    required
+                  />
                   <Button
                     type="submit"
                     className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white transition-all duration-300 hover:scale-105"

@@ -109,7 +109,7 @@ export function ExperienceSection({ experience }: ExperienceSectionProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8 }}
                 >
-                  <Card className="bg-white/80 dark:bg-gray-900/70 border border-gray-300 dark:border-gray-700 backdrop-blur-sm hover:border-cyan-500/50 dark:hover:border-cyan-400/80 transition-all duration-300">
+                  <Card className="bg-gray-100 dark:bg-gray-900/30   backdrop-blur-sm transition-all duration-300">
                     <CardContent className="p-8">
                       <div className="flex items-start space-x-4">
                         <div
