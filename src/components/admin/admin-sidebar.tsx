@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Home,
-  User,
-  FileBadge,
-  Code2,
-  Mail,
-  BookText,
-  BadgeCheck,
-} from "lucide-react";
+import { Home, User, BadgeCheck, FolderKanban, Briefcase } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -32,11 +24,9 @@ type Profile = Database["public"]["Tables"]["profile"]["Row"];
 const menuItems = [
   { title: "Home", url: "home", icon: Home },
   { title: "Profile", url: "profile", icon: User },
-  { title: "Skills", url: "skills", icon: FileBadge },
-  { title: "Portfolio", url: "portfolio", icon: Code2 },
-  { title: "Kontak Saya", url: "kontak", icon: Mail },
-  { title: "Blog", url: "#blog", icon: BookText },
-  { title: "Certificate", url: "#certificate", icon: BadgeCheck },
+  { title: "Skills", url: "skills", icon: BadgeCheck },
+  { title: "Portfolio", url: "portfolio", icon: FolderKanban },
+  { title: "Experience", url: "experience", icon: Briefcase },
 ];
 
 export function AdminSidebar() {
@@ -85,7 +75,9 @@ export function AdminSidebar() {
             <h1 className="text-xl font-bold mt-4">
               {profile?.name || "Your Name"}
             </h1>
-            <p className="text-gray-500 p-2">{profile?.title || "Your Title"}</p>
+            <p className="text-gray-500 p-2">
+              {profile?.title || "Your Title"}
+            </p>
           </SidebarGroupContent>
 
           <SidebarGroupContent>

@@ -30,10 +30,10 @@ export default function Navbar() {
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
-  return (
+ return (
     <>
-      {/* Navbar Atas (logo + nama + toggle theme) */}
-      <nav className="fixed top-0 w-full z-50 bg-white/50 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-md h-16 px-6 flex items-center justify-between">
+      {/* Navbar Atas (logo + nama + toggle theme) — tampil hanya di md ke atas */}
+      <nav className="fixed top-0 w-full z-50 bg-white/50 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-md h-16 px-6 flex items-center justify-between md:flex">
         <div className="flex items-center space-x-2">
           <Home className="w-6 h-6 text-cyan-500 dark:text-cyan-400" />
           <span className="text-cyan-500 dark:text-cyan-400 font-semibold text-lg">
@@ -57,7 +57,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Bottom Nav for Mobile */}
+      {/* Bottom Nav for Mobile — tampil hanya di bawah md */}
       <nav className="md:hidden fixed bottom-0 w-full z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 shadow-inner flex justify-around items-center h-14">
         {navLinks.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href;
