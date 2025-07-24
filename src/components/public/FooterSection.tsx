@@ -12,8 +12,8 @@ interface FooterSectionProps {
 
 export function FooterSection({ profile }: FooterSectionProps) {
   return (
-    <footer className="py-12 px-6 border-t text-center border-cyan-400 dark:border-violet-700 bg-white dark:bg-gray-900 transition-colors duration-500">
-      <div className="max-w-6xl mx-auto">
+    <footer className="py-20 px-6 border-t text-center border-cyan-400 dark:border-violet-700 bg-white dark:bg-gray-900 transition-colors duration-500">
+     
         <div className="flex flex-col md:flex-row justify-between items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -81,7 +81,7 @@ export function FooterSection({ profile }: FooterSectionProps) {
             and Tailwind CSS.
           </p>
         </motion.div>
-      </div>
+      
     </footer>
   );
 }

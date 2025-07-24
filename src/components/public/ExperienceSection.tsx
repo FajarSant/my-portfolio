@@ -83,9 +83,8 @@ export function ExperienceSection({ experience }: ExperienceSectionProps) {
   return (
     <section
       id="experience"
-      className="py-20 px-6 min-h-screen bg-gray-100 dark:bg-gray-900/30 transition-colors duration-500"
+      className="py-20 px-6  min-h-screen min-w-screen bg-gray-100 dark:bg-gray-900/30 transition-colors duration-500"
     >
-      <main className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -190,7 +189,6 @@ export function ExperienceSection({ experience }: ExperienceSectionProps) {
             </motion.div>
           )}
         </div>
-      </main>
     </section>
   );
 }

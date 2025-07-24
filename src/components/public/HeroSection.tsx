@@ -17,14 +17,14 @@ export function HeroSection({ profile, onScrollToSection }: HeroSectionProps) {
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden
+      className="min-h-screen min-w-screen flex items-center justify-center relative overflow-hidden
                  bg-white dark:bg-gray-900 transition-colors duration-500"
     >
       {/* Background gradients with light/dark mode adjustments */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 dark:from-blue-900/30 via-purple-900/10 dark:via-purple-900/30 to-cyan-900/10 dark:to-cyan-900/30"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,212,255,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(0,212,255,0.2),transparent_50%)]"></div>
 
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+      <div className="relative z-10 text-center mx-auto px-6">
         <div className="mb-8">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}

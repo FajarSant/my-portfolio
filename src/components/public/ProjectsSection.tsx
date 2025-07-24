@@ -77,9 +77,8 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section
       id="projects"
-      className="py-20 px-6 bg-white dark:bg-gray-900 transition-colors duration-500"
+      className="py-20 px-6 bg-white  min-h-screen min-w-screen dark:bg-gray-900 transition-colors duration-500"
     >
-      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -351,7 +350,6 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
     </section>
   );
 }

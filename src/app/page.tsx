@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { HeroSection } from "@/components/public/HeroSection";
 import { AboutSection } from "@/components/public/AboutSection";
 import { ExperienceSection } from "@/components/public/ExperienceSection";
-import Navbar from "@/components/public/navbar";
+import Navbar from "@/components/public/NavigationBar";
 import { ProjectsSection } from "@/components/public/ProjectsSection";
 import { SkillsSection } from "@/components/public/SkillsSection";
 import { EducationSection } from "@/components/public/EducationSection";
@@ -108,7 +108,7 @@ export default function HomePage() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection profile={profile} onScrollToSection={scrollToSection} />
       <AboutSection profile={profile} stats={stats} />
@@ -117,7 +117,7 @@ export default function HomePage() {
       <SkillsSection skills={skills} />
       <EducationSection education={education} />
       <ContactSection profile={profile} />
-      <FooterSection profile={profile} /> *
+      <FooterSection profile={profile} />
     </div>
   );
 }

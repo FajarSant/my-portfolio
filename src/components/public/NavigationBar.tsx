@@ -19,9 +19,9 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home", icon: Home },
-    { href: "/skills", label: "Skills", icon: Code },
-    { href: "/projects", label: "Projects", icon: Folder },
-    { href: "/contact", label: "Contact", icon: Mail },
+    { href: "#skills", label: "Skills", icon: Code },
+    { href: "#projects", label: "Projects", icon: Folder },
+    { href: "#contact", label: "Contact", icon: Mail },
   ];
 
   const handleNavClick = (href: string) => {
@@ -33,7 +33,7 @@ export default function Navbar() {
  return (
     <>
       {/* Navbar Atas (logo + nama + toggle theme) — tampil hanya di md ke atas */}
-      <nav className="fixed top-0 w-full z-50 bg-white/50 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-md h-16 px-6 flex items-center justify-between md:flex">
+      <nav className="fixed top-0 w-full z-50  bg-white/50 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-md h-16 px-6 flex items-center justify-between md:flex">
         <div className="flex items-center space-x-2">
           <Home className="w-6 h-6 text-cyan-500 dark:text-cyan-400" />
           <span className="text-cyan-500 dark:text-cyan-400 font-semibold text-lg">

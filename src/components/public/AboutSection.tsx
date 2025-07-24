@@ -20,9 +20,8 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
   return (
     <section
       id="about"
-      className="py-20 px-6 bg-white dark:bg-gray-900 transition-colors duration-500"
+      className="py-20 px-6 min-h-screen min-w-screen bg-white dark:bg-gray-900 transition-colors duration-500"
     >
-      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -43,7 +42,7 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-lg text-justify text-gray-700 dark:text-gray-300 leading-relaxed">
               {profile?.bio ||
                 "Passionate Computer Engineering graduate with a specialized focus on Flutter development. I create beautiful, performant mobile applications that deliver exceptional user experiences across both iOS and Android platforms."}
             </p>
@@ -104,7 +103,6 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
             </Card>
           </motion.div>
         </div>
-      </div>
     </section>
   );
 }
