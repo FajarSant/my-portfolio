@@ -13,32 +13,30 @@ export default function ExperiencePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-const fetchExperience = async () => {
-  setLoading(true);
-  try {
-    const { data, error } = await supabase
-      .from("experience")
-      .select("*")
-      .order("start_date", { ascending: false });
+  useEffect(() => {
+    const fetchExperience = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("experience")
+          .select("*")
+          .order("start_date", { ascending: false });
 
-    if (error) throw error;
-    setExperience(data || []);
-  } catch (err: unknown) {
-    // Type narrowing to ensure we have an Error object
-    if (err instanceof Error) {
-      setError(err.message || "Failed to load experience.");
-    } else {
-      setError("Unknown error occurred while fetching experience.");
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+        if (error) throw error;
+        setExperience(data || []);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message || "Failed to load experience.");
+        } else {
+          setError("Unknown error occurred while fetching experience.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
- useEffect(() => {
-  fetchExperience();
-}, [fetchExperience]); 
-
+    fetchExperience();
+  }, [supabase]);  // Now `supabase` is the only dependency
 
   if (loading) {
     return <div className="p-8 text-center">Loading...</div>;
