@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Trash2, Edit, Plus, Briefcase } from "lucide-react";
+import { Trash2, Edit, Briefcase } from "lucide-react";
 import { supabase, type Database } from "@/lib/supabase";
 
 type Experience = Database["public"]["Tables"]["experience"]["Row"];

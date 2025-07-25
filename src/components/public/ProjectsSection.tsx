@@ -274,7 +274,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                 <div className="p-6">
                   {/* Project Image */}
                   <div className="mb-6">
-                    <img
+                    <Image
                       src={
                         selectedProject.image_url ||
                         "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"

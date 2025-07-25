@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Trash2, Edit, FolderOpen, ExternalLink, Github } from "lucide-react";
 import { supabase, type Database } from "@/lib/supabase";
 import { uploadFile } from "@/lib/storage";
+import Image from "next/image";
 
 type Project = Database["public"]["Tables"]["projects"]["Row"];
 
@@ -273,7 +274,7 @@ export function PortfolioManager({
               />
               {editingProject?.image_url && (
                 <div className="mt-2">
-                  <img
+                  <Image
                     src={editingProject.image_url}
                     alt="Current project image"
                     className="w-32 h-20 object-cover rounded"
@@ -320,7 +321,7 @@ export function PortfolioManager({
                   className="border rounded-lg overflow-hidden"
                 >
                   <div className="relative">
-                    <img
+                    <Image
                       src={
                         project.image_url ||
                         "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=500"

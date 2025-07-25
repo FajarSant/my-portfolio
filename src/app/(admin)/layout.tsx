@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AuthService } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { Topbar } from "@/components/admin/Topbar";

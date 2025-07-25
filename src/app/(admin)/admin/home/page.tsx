@@ -5,7 +5,6 @@ import { StatsOverview } from "@/components/admin/StatsOverview";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Database } from "@/lib/supabase";
 
-type Profile = Database["public"]["Tables"]["profile"]["Row"];
 type Skill = Database["public"]["Tables"]["skills"]["Row"];
 type Education = Database["public"]["Tables"]["education"]["Row"];
 type Experience = Database["public"]["Tables"]["experience"]["Row"];
@@ -14,7 +13,6 @@ type Project = Database["public"]["Tables"]["projects"]["Row"];
 export default function HomePage() {
   const supabase = createClientComponentClient<Database>();
 
-  const [profile, setProfile] = useState<Profile | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [education, setEducation] = useState<Education[]>([]);
   const [experience, setExperience] = useState<Experience[]>([]);
@@ -57,10 +55,13 @@ export default function HomePage() {
         setProjects(projectsData ?? []);
 
         // Fetch certificates
-        const { data: certificatesData, error: certificatesError } =
-          await supabase.from("certificates").select("*");
-      } catch (error: any) {
-        setError(error.message || "Failed to fetch data");
+      } catch (err: unknown) {
+        // Narrow the error type to handle cases correctly
+        if (err instanceof Error) {
+          setError(err.message || "Failed to fetch data");
+        } else {
+          setError("Unknown error occurred while fetching data");
+        }
       } finally {
         setLoading(false);
       }

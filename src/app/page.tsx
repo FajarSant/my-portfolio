@@ -84,25 +84,26 @@ export default function HomePage() {
   };
 
   // Detect active section on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
+useEffect(() => {
+  const handleScroll = () => {
+    const scrollPosition = window.scrollY + window.innerHeight / 3;
 
-      for (let id of SECTION_IDS) {
-        const el = document.getElementById(id);
-        if (el) {
-          const { offsetTop, offsetHeight } = el;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(id);
-            break;
-          }
+    for (const id of SECTION_IDS) {  // Use `const` here
+      const el = document.getElementById(id);
+      if (el) {  // Check if the element exists before accessing its properties
+        const { offsetTop, offsetHeight } = el;
+        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          setActiveSection(id);
+          break;
         }
       }
-    };
+    }
+  };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground scroll-smooth">

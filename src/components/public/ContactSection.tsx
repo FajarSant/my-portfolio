@@ -95,7 +95,7 @@ export function ContactSection({ profile }: ContactSectionProps) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl text-gray-700 dark:text-gray-300"
           >
-            Ready to bring your mobile app ideas to life? Let's discuss your
+            Ready to bring your mobile app ideas to life? Let`&apos;`s discuss your
             next project.
           </motion.p>
         </div>
