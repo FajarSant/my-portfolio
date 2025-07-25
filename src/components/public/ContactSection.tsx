@@ -78,6 +78,7 @@ export function ContactSection({ profile }: ContactSectionProps) {
       id="contact"
       className="py-20 min-h-screen bg-white dark:bg-gray-900 transition-colors duration-500"
     >
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 40 }}
@@ -210,6 +211,7 @@ export function ContactSection({ profile }: ContactSectionProps) {
             </motion.div>
           </div>
         </div>
+      </div>
     </section>
   );
 }

@@ -22,7 +22,7 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
   const secondRowSkills = skills.slice(Math.ceil(skills.length / 2));
 
   return (
-    <section id="skills" className="py-20  bg-background dark:bg-gray-900/30">
+    <section id="skills" className="py-20 min-w-screen bg-background dark:bg-gray-900/30">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -20,8 +20,9 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
   return (
     <section
       id="about"
-      className="py-20 px-6 min-h-screen min-w-screen bg-white dark:bg-gray-900 transition-colors duration-500"
+      className="py-20 px-6 min-h-screen  bg-white dark:bg-gray-900 transition-colors duration-500"
     >
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -103,6 +104,7 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
             </Card>
           </motion.div>
         </div>
+      </div>
     </section>
   );
 }

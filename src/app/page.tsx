@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { HeroSection } from "@/components/public/HeroSection";
 import { AboutSection } from "@/components/public/AboutSection";
 import { ExperienceSection } from "@/components/public/ExperienceSection";
-import Navbar from "@/components/public/NavigationBar";
 import { ProjectsSection } from "@/components/public/ProjectsSection";
 import { SkillsSection } from "@/components/public/SkillsSection";
 import { EducationSection } from "@/components/public/EducationSection";
-import { supabase, type Database } from "@/lib/supabase";
 import { ContactSection } from "@/components/public/ContactSection";
 import { FooterSection } from "@/components/public/FooterSection";
+import { NavigationBar } from "@/components/public/NavigationBar";
+import { supabase, type Database } from "@/lib/supabase";
 
 type Profile = Database["public"]["Tables"]["profile"]["Row"];
 type Experience = Database["public"]["Tables"]["experience"]["Row"];
@@ -24,6 +24,15 @@ type PortfolioStats = {
   years_experience: number;
 };
 
+const SECTION_IDS = [
+  "about",
+  "experience",
+  "projects",
+  "skills",
+  "education",
+  "contact",
+];
+
 export default function HomePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [experience, setExperience] = useState<Experience[]>([]);
@@ -36,87 +45,101 @@ export default function HomePage() {
     years_experience: 0,
   });
 
+  const [activeSection, setActiveSection] = useState("about");
+
   useEffect(() => {
-    async function fetchProfile() {
-      const { data, error } = await supabase
-        .from("profile")
-        .select("*")
-        .limit(1)
-        .single();
-      if (!error && data) setProfile(data);
-      else console.error("Failed to load profile", error);
-    }
+    async function fetchData() {
+      const [{ data: profile }, { data: experience }, { data: projects }, { data: skills }, { data: education }] =
+        await Promise.all([
+          supabase.from("profile").select("*").limit(1).single(),
+          supabase.from("experience").select("*").order("start_date", { ascending: false }),
+          supabase.from("projects").select("*").order("created_at", { ascending: false }),
+          supabase.from("skills").select("*").order("name", { ascending: true }),
+          supabase.from("education").select("*").order("start_date", { ascending: false }),
+        ]);
 
-    async function fetchExperience() {
-      const { data, error } = await supabase
-        .from("experience")
-        .select("*")
-        .order("start_date", { ascending: false });
-      if (!error && data) setExperience(data);
-      else console.error("Failed to load experience", error);
-    }
+      if (profile) setProfile(profile);
+      if (experience) setExperience(experience);
+      if (projects) setProjects(projects);
+      if (skills) setSkills(skills);
+      if (education) setEducation(education);
 
-    async function fetchProjects() {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (!error && data) setProjects(data);
-      else console.error("Failed to load projects", error);
-    }
-
-    async function fetchSkills() {
-      const { data, error } = await supabase
-        .from("skills")
-        .select("*")
-        .order("name", { ascending: true });
-      if (!error && data) setSkills(data);
-      else console.error("Failed to load skills", error);
-    }
-
-    async function fetchEducation() {
-      const { data, error } = await supabase
-        .from("education")
-        .select("*")
-        .order("start_date", { ascending: false });
-      if (!error && data) setEducation(data);
-      else console.error("Failed to load education", error);
-    }
-
-    async function fetchStats() {
-      // Optional: bisa hitung dari data nyata nanti
+      // Optional: Replace with actual calculation logic
       setStats({
-        total_projects: 12,
-        total_skills: 8,
+        total_projects: projects?.length ?? 0,
+        total_skills: skills?.length ?? 0,
         years_experience: 3,
       });
     }
 
-    fetchProfile();
-    fetchExperience();
-    fetchProjects();
-    fetchSkills();
-    fetchEducation();
-    fetchStats();
+    fetchData();
   }, []);
 
+  // Scroll to section
   const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
+  // Detect active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      for (let id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el) {
+          const { offsetTop, offsetHeight } = el;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection profile={profile} onScrollToSection={scrollToSection} />
-      <AboutSection profile={profile} stats={stats} />
-      <ExperienceSection experience={experience} />
-      <ProjectsSection projects={projects} />
-      <SkillsSection skills={skills} />
-      <EducationSection education={education} />
-      <ContactSection profile={profile} />
+    <div className="min-h-screen bg-background text-foreground scroll-smooth">
+      <NavigationBar
+        profile={profile}
+        activeSection={activeSection}
+        onScrollToSection={scrollToSection}
+      />
+
+      <section id="hero">
+        <HeroSection profile={profile} onScrollToSection={scrollToSection} />
+      </section>
+
+      <section id="about">
+        <AboutSection profile={profile} stats={stats} />
+      </section>
+
+      <section id="experience">
+        <ExperienceSection experience={experience} />
+      </section>
+
+      <section id="projects">
+        <ProjectsSection projects={projects} />
+      </section>
+
+      <section id="skills">
+        <SkillsSection skills={skills} />
+      </section>
+
+      <section id="education">
+        <EducationSection education={education} />
+      </section>
+
+      <section id="contact">
+        <ContactSection profile={profile} />
+      </section>
+
       <FooterSection profile={profile} />
     </div>
   );

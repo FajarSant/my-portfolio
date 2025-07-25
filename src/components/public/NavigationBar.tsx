@@ -2,98 +2,148 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Home, Code, Folder, Mail, Moon, Sun } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Code,
+  Folder,
+  Mail,
+  GraduationCap,
+  Briefcase,
+  Info,
+} from "lucide-react";
 import { useTheme } from "next-themes";
-import { usePathname, useRouter } from "next/navigation";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { Database } from "@/lib/supabase";
 
-export default function Navbar() {
+type Profile = Database["public"]["Tables"]["profile"]["Row"];
+
+interface NavigationBarProps {
+  profile: Profile | null;
+  activeSection: string;
+  onScrollToSection: (sectionId: string) => void;
+}
+
+export function NavigationBar({
+  profile,
+  activeSection,
+  onScrollToSection,
+}: NavigationBarProps) {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const navLinks = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "#skills", label: "Skills", icon: Code },
-    { href: "#projects", label: "Projects", icon: Folder },
-    { href: "#contact", label: "Contact", icon: Mail },
+  const navItems = [
+    { id: "about", name: "About", icon: Info },
+    { id: "experience", name: "Experience", icon: Briefcase },
+    { id: "projects", name: "Projects", icon: Folder },
+    { id: "skills", name: "Skills", icon: Code },
+    { id: "education", name: "Education", icon: GraduationCap },
+    { id: "contact", name: "Contact", icon: Mail },
   ];
 
-  const handleNavClick = (href: string) => {
-    router.push(href);
+  const handleNavClick = (id: string) => {
+    onScrollToSection(id);
   };
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
- return (
+  return (
     <>
-      {/* Navbar Atas (logo + nama + toggle theme) — tampil hanya di md ke atas */}
-      <nav className="fixed top-0 w-full z-50  bg-white/50 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-md h-16 px-6 flex items-center justify-between md:flex">
-        <div className="flex items-center space-x-2">
-          <Home className="w-6 h-6 text-cyan-500 dark:text-cyan-400" />
-          <span className="text-cyan-500 dark:text-cyan-400 font-semibold text-lg">
-            MyApp
-          </span>
-        </div>
-        <div>
-          {mounted && (
-            <Button
-              onClick={toggleTheme}
-              aria-label="Toggle Dark Mode"
-              variant={"outline"}
-            >
-              {theme === "dark" ? (
-                <Sun className="w-5 h-5 text-yellow-400 drop-shadow-md" />
-              ) : (
-                <Moon className="w-5 h-5 text-cyan-600 drop-shadow-md" />
-              )}
-            </Button>
-          )}
+      {/* Top Navigation Bar */}
+      <nav className="fixed top-0 w-full z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          {/* Left: Logo / Name */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+          >
+            {profile?.name || "Flutter Dev"}
+          </motion.div>
+
+          {/* Right: Theme toggle + Desktop nav */}
+          <div className="flex items-center gap-6">
+            {/* Desktop nav */}
+            <div className="hidden md:flex gap-6">
+              {navItems.map(({ id, name }) => (
+                <button
+                  key={id}
+                  onClick={() => handleNavClick(id)}
+                  className={`text-sm font-medium transition-colors relative ${
+                    activeSection === id
+                      ? "text-cyan-500 dark:text-cyan-400"
+                      : "text-gray-700 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-300"
+                  }`}
+                >
+                  {name}
+                  {activeSection === id && (
+                    <motion.div
+                      layoutId="underline"
+                      className="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400"
+                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Theme toggle button */}
+            {mounted && (
+              <Button
+                onClick={toggleTheme}
+                variant="outline"
+                size="icon"
+                aria-label="Toggle Dark Mode"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5 text-yellow-400" />
+                ) : (
+                  <Moon className="w-5 h-5 text-cyan-600" />
+                )}
+              </Button>
+            )}
+          </div>
         </div>
       </nav>
 
-      {/* Bottom Nav for Mobile — tampil hanya di bawah md */}
-      <nav className="md:hidden fixed bottom-0 w-full z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 shadow-inner flex justify-around items-center h-14">
-        {navLinks.map(({ href, label, icon: Icon }) => {
-          const isActive = pathname === href;
+      {/* Bottom Navigation Bar (Mobile only) */}
+      <nav className="md:hidden fixed bottom-0 w-full z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border-t border-gray-200 dark:border-gray-700 shadow-inner flex justify-around items-center h-14">
+        {navItems.map(({ id, name, icon: Icon }) => {
+          const isActive = activeSection === id;
           return (
             <motion.button
-              key={href}
-              onClick={() => handleNavClick(href)}
-              className="flex flex-col items-center justify-center focus:outline-none"
+              key={id}
+              onClick={() => handleNavClick(id)}
               whileTap={{ scale: 0.9 }}
+              className="flex flex-col items-center justify-center focus:outline-none"
               aria-current={isActive ? "page" : undefined}
-              title={label}
+              title={name}
               type="button"
             >
               <Icon
                 className={`w-6 h-6 transition-colors ${
                   isActive
-                    ? "text-cyan-500 dark:text-cyan-400 drop-shadow-lg"
-                    : "text-gray-500 dark:text-gray-400 hover:text-cyan-400 dark:hover:text-cyan-300"
+                    ? "text-cyan-500 dark:text-cyan-400 drop-shadow-md"
+                    : "text-gray-500 dark:text-gray-400 hover:text-cyan-500 dark:hover:text-cyan-300"
                 }`}
               />
               <span
                 className={`text-[10px] mt-1 ${
                   isActive
-                    ? "text-cyan-500 dark:text-cyan-400 font-semibold"
+                    ? "text-cyan-500 dark:text-cyan-400 font-medium"
                     : "text-gray-500 dark:text-gray-400"
                 }`}
               >
-                {label}
+                {name}
               </span>
             </motion.button>
           );
         })}
       </nav>
-
-      {/* Padding supaya konten tidak tertutup navbar */}
-      <div className="pt-16 pb-14 md:pt-16 md:pb-0" />
     </>
   );
 }
