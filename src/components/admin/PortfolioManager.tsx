@@ -25,9 +25,8 @@ const projectSchema = z.object({
   technologies: z.string().min(1, "Technologies are required"),
   github_url: z.string().url().optional().or(z.literal("")),
   live_url: z.string().url().optional().or(z.literal("")),
-  featured: z.boolean(),  // hilangkan default dan optional
+  featured: z.boolean(), // hilangkan default dan optional
 });
-
 
 type ProjectFormData = z.infer<typeof projectSchema>;
 
@@ -277,6 +276,8 @@ export function PortfolioManager({
                   <Image
                     src={editingProject.image_url}
                     alt="Current project image"
+                    height={600}
+                    width={600}
                     className="w-32 h-20 object-cover rounded"
                   />
                 </div>
@@ -327,6 +328,8 @@ export function PortfolioManager({
                         "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=500"
                       }
                       alt={project.title}
+                      height={600}
+                      width={600}
                       className="w-full h-32 object-cover"
                     />
                     {project.featured && (

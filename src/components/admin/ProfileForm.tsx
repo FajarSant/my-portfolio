@@ -274,11 +274,13 @@ export default function ProfileForm({
                 onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
               />
               {profile?.avatar_url && (
-                <div className="mt-2">
+            <div className="h-24 w-24 mt-2 overflow-hidden rounded-full bg-gray-300">
                   <Image
                     src={profile.avatar_url}
                     alt="Current avatar"
-                    className="w-20 h-20 rounded-full object-cover"
+                    width={400}
+                    height={200}
+                  className="rounded-full w-full h-full object-cover object-top"
                   />
                 </div>
               )}

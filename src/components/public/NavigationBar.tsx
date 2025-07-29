@@ -24,6 +24,15 @@ interface NavigationBarProps {
   onScrollToSection: (sectionId: string) => void;
 }
 
+const navItems = [
+  { id: "about", name: "About", icon: Info },
+  { id: "experience", name: "Experience", icon: Briefcase },
+  { id: "projects", name: "Projects", icon: Folder },
+  { id: "skills", name: "Skills", icon: Code },
+  { id: "education", name: "Education", icon: GraduationCap },
+  { id: "contact", name: "Contact", icon: Mail },
+];
+
 export function NavigationBar({
   profile,
   activeSection,
@@ -32,31 +41,18 @@ export function NavigationBar({
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  const navItems = [
-    { id: "about", name: "About", icon: Info },
-    { id: "experience", name: "Experience", icon: Briefcase },
-    { id: "projects", name: "Projects", icon: Folder },
-    { id: "skills", name: "Skills", icon: Code },
-    { id: "education", name: "Education", icon: GraduationCap },
-    { id: "contact", name: "Contact", icon: Mail },
-  ];
-
-  const handleNavClick = (id: string) => {
-    onScrollToSection(id);
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
   };
-
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
     <>
-      {/* Top Navigation Bar */}
+      {/* Top Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          {/* Left: Logo / Name */}
+          {/* Logo or Name */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -65,15 +61,15 @@ export function NavigationBar({
             {profile?.name || "Flutter Dev"}
           </motion.div>
 
-          {/* Right: Theme toggle + Desktop nav */}
+          {/* Right Side - Desktop nav + theme toggle */}
           <div className="flex items-center gap-6">
-            {/* Desktop nav */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex gap-6">
               {navItems.map(({ id, name }) => (
                 <button
                   key={id}
-                  onClick={() => handleNavClick(id)}
-                  className={`text-sm font-medium transition-colors relative ${
+                  onClick={() => onScrollToSection(id)}
+                  className={`relative text-sm font-medium transition-colors ${
                     activeSection === id
                       ? "text-cyan-500 dark:text-cyan-400"
                       : "text-gray-700 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-300"
@@ -91,13 +87,13 @@ export function NavigationBar({
               ))}
             </div>
 
-            {/* Theme toggle button */}
+            {/* Theme Toggle */}
             {mounted && (
               <Button
                 onClick={toggleTheme}
                 variant="outline"
                 size="icon"
-                aria-label="Toggle Dark Mode"
+                aria-label="Toggle Theme"
               >
                 {theme === "dark" ? (
                   <Sun className="w-5 h-5 text-yellow-400" />
@@ -110,18 +106,18 @@ export function NavigationBar({
         </div>
       </nav>
 
-      {/* Bottom Navigation Bar (Mobile only) */}
+      {/* Mobile Navigation */}
       <nav className="md:hidden fixed bottom-0 w-full z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border-t border-gray-200 dark:border-gray-700 shadow-inner flex justify-around items-center h-14">
         {navItems.map(({ id, name, icon: Icon }) => {
           const isActive = activeSection === id;
           return (
             <motion.button
               key={id}
-              onClick={() => handleNavClick(id)}
+              onClick={() => onScrollToSection(id)}
               whileTap={{ scale: 0.9 }}
               className="flex flex-col items-center justify-center focus:outline-none"
               aria-current={isActive ? "page" : undefined}
-              title={name}
+              aria-label={name}
               type="button"
             >
               <Icon

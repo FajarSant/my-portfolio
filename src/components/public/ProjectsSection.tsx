@@ -276,11 +276,13 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                   <div className="mb-6">
                     <Image
                       src={
-                        selectedProject.image_url ||
+                        selectedProject?.image_url ||
                         "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
                       }
-                      alt={selectedProject.title}
-                      className="w-full h-64 md:h-80 object-cover rounded-lg"
+                      alt={selectedProject?.title || "Project Image"}
+                      width={800} 
+                      height={400} 
+                      className="rounded-lg object-cover"
                     />
                   </div>
 

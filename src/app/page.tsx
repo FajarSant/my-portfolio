@@ -25,6 +25,7 @@ type PortfolioStats = {
 };
 
 const SECTION_IDS = [
+  "home",
   "about",
   "experience",
   "projects",
@@ -45,7 +46,7 @@ export default function HomePage() {
     years_experience: 0,
   });
 
-  const [activeSection, setActiveSection] = useState("about");
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     async function fetchData() {
@@ -113,7 +114,7 @@ useEffect(() => {
         onScrollToSection={scrollToSection}
       />
 
-      <section id="hero">
+      <section id="home">
         <HeroSection profile={profile} onScrollToSection={scrollToSection} />
       </section>
 
