@@ -65,7 +65,6 @@ export default function HomePage() {
       if (skills) setSkills(skills);
       if (education) setEducation(education);
 
-      // Optional: Replace with actual calculation logic
       setStats({
         total_projects: projects?.length ?? 0,
         total_skills: skills?.length ?? 0,
@@ -76,7 +75,6 @@ export default function HomePage() {
     fetchData();
   }, []);
 
-  // Scroll to section
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (el) {
@@ -84,14 +82,13 @@ export default function HomePage() {
     }
   };
 
-  // Detect active section on scroll
 useEffect(() => {
   const handleScroll = () => {
     const scrollPosition = window.scrollY + window.innerHeight / 3;
 
-    for (const id of SECTION_IDS) {  // Use `const` here
+    for (const id of SECTION_IDS) { 
       const el = document.getElementById(id);
-      if (el) {  // Check if the element exists before accessing its properties
+      if (el) {  
         const { offsetTop, offsetHeight } = el;
         if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
           setActiveSection(id);

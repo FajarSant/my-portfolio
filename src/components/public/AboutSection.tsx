@@ -1,6 +1,9 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Briefcase, Globe, Trophy, Code, MapPin, Phone } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Database } from "@/lib/supabase";
 
 type Profile = Database["public"]["Tables"]["profile"]["Row"];
@@ -13,16 +16,17 @@ interface PortfolioStats {
 
 interface AboutSectionProps {
   profile: Profile | null;
-  stats: PortfolioStats;
+  stats: PortfolioStats | null;
 }
 
 export function AboutSection({ profile, stats }: AboutSectionProps) {
   return (
     <section
       id="about"
-      className="py-20 px-6 min-h-screen  bg-white dark:bg-gray-900 transition-colors duration-500"
+      className="py-20 px-6 min-h-screen bg-white dark:bg-gray-900 transition-colors duration-500"
     >
       <div className="max-w-6xl mx-auto">
+        {/* Title */}
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -37,32 +41,51 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Left: Bio + Contact */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <p className="text-lg text-justify text-gray-700 dark:text-gray-300 leading-relaxed">
-              {profile?.bio ||
-                "Passionate Computer Engineering graduate with a specialized focus on Flutter development. I create beautiful, performant mobile applications that deliver exceptional user experiences across both iOS and Android platforms."}
-            </p>
+            {profile ? (
+              <p className="text-lg text-justify text-gray-700 dark:text-gray-300 leading-relaxed">
+                {profile.bio}
+              </p>
+            ) : (
+              <div className="space-y-3">
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-5 w-11/12" />
+                <Skeleton className="h-5 w-10/12" />
+              </div>
+            )}
+
             <div className="flex flex-wrap gap-4 text-gray-700 dark:text-gray-300">
-              {profile?.location && (
-                <div className="flex items-center space-x-2">
-                  <MapPin className="w-5 h-5 text-cyan-400" />
-                  <span>{profile.location}</span>
-                </div>
-              )}
-              {profile?.phone && (
-                <div className="flex items-center space-x-2">
-                  <Phone className="w-5 h-5 text-cyan-400" />
-                  <span>{profile.phone}</span>
-                </div>
+              {profile ? (
+                <>
+                  {profile.location && (
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="w-5 h-5 text-cyan-400" />
+                      <span>{profile.location}</span>
+                    </div>
+                  )}
+                  {profile.phone && (
+                    <div className="flex items-center space-x-2">
+                      <Phone className="w-5 h-5 text-cyan-400" />
+                      <span>{profile.phone}</span>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="h-5 w-28" />
+                </>
               )}
             </div>
           </motion.div>
 
+          {/* Right: Stats */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -71,34 +94,48 @@ export function AboutSection({ profile, stats }: AboutSectionProps) {
             <Card className="bg-white dark:bg-gray-800 backdrop-blur-sm transition-colors duration-500">
               <CardContent className="p-8">
                 <div className="grid grid-cols-2 gap-6 text-center text-gray-900 dark:text-gray-100">
-                  <div>
-                    <Briefcase className="w-12 h-12 text-blue-500 dark:text-blue-400 mx-auto mb-4" />
-                    <h3 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                      {stats.years_experience}+
-                    </h3>
-                    <p className="font-medium">Years Experience</p>
-                  </div>
-                  <div>
-                    <Globe className="w-12 h-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
-                    <h3 className="text-3xl font-bold text-green-700 dark:text-green-400 mb-2">
-                      {stats.total_projects}
-                    </h3>
-                    <p className="font-medium">Projects Completed</p>
-                  </div>
-                  <div>
-                    <Trophy className="w-12 h-12 text-yellow-500 dark:text-yellow-400 mx-auto mb-4" />
-                    <h3 className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
-                      {stats.total_skills}
-                    </h3>
-                    <p className="font-medium">Technologies Mastered</p>
-                  </div>
-                  <div>
-                    <Code className="w-12 h-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
-                    <h3 className="text-3xl font-bold text-purple-700 dark:text-purple-400 mb-2">
-                      100%
-                    </h3>
-                    <p className="font-medium">Clean Code</p>
-                  </div>
+                  {stats ? (
+                    <>
+                      <div>
+                        <Briefcase className="w-12 h-12 text-blue-500 dark:text-blue-400 mx-auto mb-4" />
+                        <h3 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                          {stats.years_experience}+
+                        </h3>
+                        <p className="font-medium">Years Experience</p>
+                      </div>
+                      <div>
+                        <Globe className="w-12 h-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
+                        <h3 className="text-3xl font-bold text-green-700 dark:text-green-400 mb-2">
+                          {stats.total_projects}
+                        </h3>
+                        <p className="font-medium">Projects Completed</p>
+                      </div>
+                      <div>
+                        <Trophy className="w-12 h-12 text-yellow-500 dark:text-yellow-400 mx-auto mb-4" />
+                        <h3 className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
+                          {stats.total_skills}
+                        </h3>
+                        <p className="font-medium">Technologies Mastered</p>
+                      </div>
+                      <div>
+                        <Code className="w-12 h-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
+                        <h3 className="text-3xl font-bold text-purple-700 dark:text-purple-400 mb-2">
+                          100%
+                        </h3>
+                        <p className="font-medium">Clean Code</p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {[...Array(4)].map((_, i) => (
+                        <div key={i} className="space-y-3">
+                          <Skeleton className="w-12 h-12 rounded-full mx-auto" />
+                          <Skeleton className="h-7 w-16 mx-auto" />
+                          <Skeleton className="h-4 w-20 mx-auto" />
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </CardContent>
             </Card>

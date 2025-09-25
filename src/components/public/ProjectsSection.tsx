@@ -12,6 +12,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { Database } from "@/lib/supabase";
 import Image from "next/image";
@@ -19,35 +20,46 @@ import Image from "next/image";
 type Project = Database["public"]["Tables"]["projects"]["Row"];
 
 interface ProjectsSectionProps {
-  projects: Project[];
+  projects: Project[] | null; // null = loading state
 }
 
 const colorSchemes = [
   { bg: "bg-cyan-500/20", text: "text-cyan-400", border: "border-cyan-500/30" },
   { bg: "bg-blue-500/20", text: "text-blue-400", border: "border-blue-500/30" },
-  {
-    bg: "bg-purple-500/20",
-    text: "text-purple-400",
-    border: "border-purple-500/30",
-  },
-  {
-    bg: "bg-green-500/20",
-    text: "text-green-400",
-    border: "border-green-500/30",
-  },
+  { bg: "bg-purple-500/20", text: "text-purple-400", border: "border-purple-500/30" },
+  { bg: "bg-green-500/20", text: "text-green-400", border: "border-green-500/30" },
   { bg: "bg-pink-500/20", text: "text-pink-400", border: "border-pink-500/30" },
-  {
-    bg: "bg-orange-500/20",
-    text: "text-orange-400",
-    border: "border-orange-500/30",
-  },
-  {
-    bg: "bg-indigo-500/20",
-    text: "text-indigo-400",
-    border: "border-indigo-500/30",
-  },
+  { bg: "bg-orange-500/20", text: "text-orange-400", border: "border-orange-500/30" },
+  { bg: "bg-indigo-500/20", text: "text-indigo-400", border: "border-indigo-500/30" },
   { bg: "bg-teal-500/20", text: "text-teal-400", border: "border-teal-500/30" },
 ];
+
+// Skeleton Loader untuk card project
+function ProjectCardSkeleton() {
+  return (
+    <Card className="bg-white dark:bg-gray-900 backdrop-blur-sm h-full">
+      <div className="relative overflow-hidden rounded-t-lg w-full h-48">
+        <Skeleton className="w-full h-full" />
+      </div>
+      <CardContent className="p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <Skeleton className="w-8 h-8 rounded-full" />
+          <div className="flex space-x-2">
+            <Skeleton className="w-5 h-5 rounded" />
+            <Skeleton className="w-5 h-5 rounded" />
+          </div>
+        </div>
+        <Skeleton className="w-2/3 h-5" />
+        <Skeleton className="w-full h-12" />
+        <div className="flex flex-wrap gap-2">
+          <Skeleton className="w-12 h-5 rounded" />
+          <Skeleton className="w-12 h-5 rounded" />
+          <Skeleton className="w-12 h-5 rounded" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -56,10 +68,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const openModal = (project: Project) => {
     setSelectedProject(project);
     setShowScrollIndicator(true);
-
-    setTimeout(() => {
-      setShowScrollIndicator(false);
-    }, 3000);
+    setTimeout(() => setShowScrollIndicator(false), 3000);
   };
 
   const closeModal = () => {
@@ -69,15 +78,13 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
-    if (target.scrollTop > 10) {
-      setShowScrollIndicator(false);
-    }
+    if (target.scrollTop > 10) setShowScrollIndicator(false);
   };
 
   return (
     <section
       id="projects"
-      className="py-20 px-6 bg-white  min-h-screen min-w-screen dark:bg-gray-900 transition-colors duration-500"
+      className="py-20 px-6 bg-white min-h-screen min-w-screen dark:bg-gray-900 transition-colors duration-500"
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
@@ -93,7 +100,11 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.length > 0 ? (
+          {projects === null ? (
+            // masih loading → tampil skeleton
+            [...Array(6)].map((_, i) => <ProjectCardSkeleton key={i} />)
+          ) : projects.length > 0 ? (
+            // ada data → render project asli
             projects.slice(0, 6).map((project, index) => {
               const colorScheme = colorSchemes[index % colorSchemes.length];
               return (
@@ -114,7 +125,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-110 rounded-t-lg"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority={index < 3} // Prioritaskan gambar awal agar cepat dimuat
+                        priority={index < 3}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -158,7 +169,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                       >
                         {project.title}
                       </h3>
-                      <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm leading-relaxed line-clamp-3">
+                      <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm leading-relaxed whitespace-pre-line text-justify line-clamp-3">
                         {project.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -186,6 +197,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               );
             })
           ) : (
+            // tidak ada data setelah load
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -195,8 +207,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               <Card className="bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 backdrop-blur-sm">
                 <CardContent className="p-6 text-center">
                   <p className="text-gray-700 dark:text-gray-300">
-                    Projects will be displayed here once configured in the admin
-                    panel.
+                    Projects will be displayed here once configured in the admin panel.
                   </p>
                 </CardContent>
               </Card>
@@ -204,7 +215,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           )}
         </div>
 
-        {/* Modal */}
+        {/* Modal Detail */}
         <AnimatePresence>
           {selectedProject && (
             <motion.div
@@ -220,10 +231,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                 exit={{ y: 50, opacity: 0 }}
                 transition={{ type: "spring", damping: 20, stiffness: 300 }}
                 className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto backdrop-blur-md relative shadow-lg"
-                style={{
-                  msOverflowStyle: "none",
-                  scrollbarWidth: "none",
-                }}
+                style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
                 onScroll={handleScroll}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -240,11 +248,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                       <div className="bg-cyan-500/20 border border-cyan-500/30 rounded-full p-2 backdrop-blur-sm">
                         <motion.div
                           animate={{ y: [0, 8, 0] }}
-                          transition={{
-                            repeat: Infinity,
-                            duration: 1.5,
-                            ease: "easeInOut",
-                          }}
+                          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                         >
                           <ChevronDown className="w-5 h-5 text-cyan-400" />
                         </motion.div>
@@ -255,6 +259,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     </motion.div>
                   )}
                 </AnimatePresence>
+
                 {/* Modal Header */}
                 <div className="sticky top-0 bg-gray-100 dark:bg-gray-900 backdrop-blur-md border-b border-gray-300 dark:border-gray-700 p-6 flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -272,16 +277,15 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
 
                 {/* Modal Content */}
                 <div className="p-6">
-                  {/* Project Image */}
                   <div className="mb-6">
                     <Image
                       src={
-                        selectedProject?.image_url ||
+                        selectedProject.image_url ||
                         "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
                       }
-                      alt={selectedProject?.title || "Project Image"}
-                      width={800} 
-                      height={400} 
+                      alt={selectedProject.title || "Project Image"}
+                      width={800}
+                      height={400}
                       className="rounded-lg object-cover"
                     />
                   </div>
@@ -293,11 +297,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                         asChild
                         className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white"
                       >
-                        <a
-                          href={selectedProject.live_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
+                        <a href={selectedProject.live_url} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="w-4 h-4 mr-2" />
                           View Live
                         </a>
@@ -309,11 +309,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                         variant="outline"
                         className="border-gray-400 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-gray-900 dark:text-gray-300"
                       >
-                        <a
-                          href={selectedProject.github_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
+                        <a href={selectedProject.github_url} target="_blank" rel="noopener noreferrer">
                           <Github className="w-4 h-4 mr-2" />
                           View Code
                         </a>
@@ -326,7 +322,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                       Description
                     </h3>
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed text-justify whitespace-pre-line">
                       {selectedProject.description}
                     </p>
                   </div>
